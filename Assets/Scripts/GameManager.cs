@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum GameState { NONE, MAIN_MENU, TUTORIAL, WAITING, START, IN_GAME, RANKING, PAUSE, GAME_OVER }
+public enum GameState { WAITING, IN_GAME, RANKING, PAUSED, GAME_OVER }
 
 public class GameManager : MonoBehaviour {
 
@@ -36,18 +36,13 @@ public class GameManager : MonoBehaviour {
     }
 
     void Start() {
-        gameState = GameState.TUTORIAL;
+        Wait();
         initialPlayerPosition = player.GetComponent<Transform>().position;
     }
 
     void Update() {
-        switch (gameState) {
-            case GameState.START:
-                StartGame();
-                break;
-            case GameState.TUTORIAL:
-                GameTutorial();
-                break;
+        if (Input.GetKeyDown(KeyCode.Escape)) {
+            TogglePause();
         }
     }
 
@@ -60,9 +55,25 @@ public class GameManager : MonoBehaviour {
         // ExtensionMethods.FindAndSetActive("_obstacles", typeof(GameObject), true);
     }
 
-    public void GameTutorial() {
+    public void TogglePause() {
+        if (gameState == GameState.PAUSED) {
+            Time.timeScale = 1;
+            gameState = GameState.IN_GAME;
+        } else {
+            Time.timeScale = 0;
+            gameState = GameState.PAUSED;
+        }
+    }
+
+    public void EndGame() {
+        Time.timeScale = 0;
+        gameState = GameState.GAME_OVER;
+    }
+
+    public void Wait() {
         ResetPlayerPosition();
         SetKinematicRigidBody(true);
+        gameState = GameState.WAITING;
     }
 
     public void AddPoints() {

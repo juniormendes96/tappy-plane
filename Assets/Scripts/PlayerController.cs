@@ -19,16 +19,18 @@ public class PlayerController : MonoBehaviour {
     }
 
     void Update() {
-        if (Input.GetMouseButtonDown(0) && GM.gameState == GameState.IN_GAME && GM.gameState != GameState.GAME_OVER) {
-            HandleMouseClick();
-        } else if (Input.GetMouseButtonDown(0) && GM.gameState == GameState.TUTORIAL) {
-            GM.StartGame();
+        if (Input.GetMouseButtonDown(0)) {
+            if (GM.gameState == GameState.IN_GAME && GM.gameState != GameState.GAME_OVER) {
+                HandleMouseClick();
+            } else if (GM.gameState == GameState.WAITING) {
+                GM.StartGame();
+            }
         }
         ChangeAngle();
     }
 
     void OnCollisionEnter2D(Collision2D collision2D) {
-        Time.timeScale = 0;
+        GM.EndGame();
     }
 
     void OnTriggerEnter2D(Collider2D collider) {
