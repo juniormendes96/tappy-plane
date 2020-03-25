@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour {
 
     Vector3 initialPlayerPosition;
     public GameObject player;
+    public GameObject pausePanel;
     public GameState gameState { get; private set; }
 
     // UI Objects
@@ -57,11 +58,13 @@ public class GameManager : MonoBehaviour {
 
     public void TogglePause() {
         if (gameState == GameState.PAUSED) {
-            Time.timeScale = 1;
+            Time.timeScale = 1f;
             gameState = GameState.IN_GAME;
+            pausePanel.SetActive(false);
         } else {
-            Time.timeScale = 0;
+            Time.timeScale = 0f;
             gameState = GameState.PAUSED;
+            pausePanel.SetActive(true);
         }
     }
 
@@ -74,6 +77,14 @@ public class GameManager : MonoBehaviour {
         ResetPlayerPosition();
         SetKinematicRigidBody(true);
         gameState = GameState.WAITING;
+    }
+
+    public void LoadCreditsScreen() {
+        // TODO
+    }
+
+    public void QuitApplication() {
+        Application.Quit();
     }
 
     public void AddPoints() {
