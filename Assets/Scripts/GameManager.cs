@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour {
     public GameObject player;
     public GameObject pausePanel;
     public GameObject gameOverPanel;
+    public GameObject creditsPanel;
 
     public GameObject SCORE_UI;
 
@@ -88,8 +89,8 @@ public class GameManager : MonoBehaviour {
         gameState = GameState.WAITING;
     }
 
-    public void LoadCreditsScreen() {
-        // TODO
+    public void ToggleCreditsPanel() {
+        creditsPanel.SetActive(!creditsPanel.activeSelf);
     }
 
     public void QuitApplication() {
