@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public enum GameState { WAITING, IN_GAME, RANKING, PAUSED, GAME_OVER }
 
@@ -12,10 +13,13 @@ public class GameManager : MonoBehaviour {
     Vector3 initialPlayerPosition;
     public GameObject player;
     public GameObject pausePanel;
+    public GameObject gameOverPanel;
+
+    public GameObject SCORE_UI;
+
     public GameState gameState { get; private set; }
 
-    // UI Objects
-    public GameObject SCORE_UI;
+    public Text finalScore;
 
     int score;
 
@@ -52,8 +56,11 @@ public class GameManager : MonoBehaviour {
         SetKinematicRigidBody(false);
         gameState = GameState.IN_GAME;
         GameReady();
+    }
 
-        // ExtensionMethods.FindAndSetActive("_obstacles", typeof(GameObject), true);
+    public void RestartGame() {
+        SceneManager.LoadScene(0);
+        Time.timeScale = 1f;
     }
 
     public void TogglePause() {
@@ -69,7 +76,9 @@ public class GameManager : MonoBehaviour {
     }
 
     public void EndGame() {
-        Time.timeScale = 0;
+        Time.timeScale = 0f;
+        gameOverPanel.SetActive(true);
+        finalScore.text = "Pontuação\n" + score;
         gameState = GameState.GAME_OVER;
     }
 
