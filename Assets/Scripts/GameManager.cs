@@ -69,10 +69,12 @@ public class GameManager : MonoBehaviour {
             Time.timeScale = 1f;
             gameState = GameState.IN_GAME;
             pausePanel.SetActive(false);
+            FindObjectOfType<AudioManager>().backgroundMusic.Play();
         } else {
             Time.timeScale = 0f;
             gameState = GameState.PAUSED;
             pausePanel.SetActive(true);
+            FindObjectOfType<AudioManager>().backgroundMusic.Pause();
         }
     }
 
@@ -81,6 +83,8 @@ public class GameManager : MonoBehaviour {
         gameOverPanel.SetActive(true);
         finalScore.text = "Pontuação\n" + score;
         gameState = GameState.GAME_OVER;
+        FindObjectOfType<AudioManager>().backgroundMusic.Stop();
+        FindObjectOfType<AudioManager>().gameOverSound.Play();
     }
 
     public void Wait() {
@@ -100,6 +104,7 @@ public class GameManager : MonoBehaviour {
     public void AddPoints() {
         score++;
         SetScoreValue(score);
+        FindObjectOfType<AudioManager>().mountainSound.Play();
     }
 
     public void SetScoreValue(int value) {
